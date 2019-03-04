@@ -4,6 +4,17 @@ class LoadRollsAction {}
 
 class RollsNotLoadedAction {}
 
+class DeleteRollAction {
+  final int rollId;
+
+  DeleteRollAction(this.rollId);
+
+  @override
+  String toString() {
+    return 'DeleteRollAction{rollId: $rollId}';
+  }
+}
+
 class RollsLoadedAction {
   final List<Roll> rolls;
 

@@ -1,5 +1,6 @@
 import 'package:film_tracker/data/db/database.dart';
 import 'package:film_tracker/models/roll.dart';
+import 'package:sqflite/sqflite.dart';
 
 class RollDao {
 
@@ -27,6 +28,14 @@ class RollDao {
     return rolls.isNotEmpty
         ? rolls.map((roll) => Roll.fromJson(roll)).toList()
         : [];
+  }
+
+  void insertRolls(List<Roll> rolls) async {
+    final db = await _dbProvider.database;
+    rolls.forEach((roll) =>
+        db.insert(
+            'Roll', roll.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.ignore));
   }
 
   /// UPDATE: Update single roll

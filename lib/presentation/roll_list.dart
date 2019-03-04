@@ -7,10 +7,14 @@ import 'package:flutter/material.dart';
 
 class RollList extends StatelessWidget {
   final List<Roll> rolls;
+  final Function(Roll) onRemove;
+  final Function(Roll) onUndoRemove;
 
   RollList({
     Key key,
     @required this.rolls,
+    @required this.onRemove,
+    @required this.onUndoRemove,
   }) : super(key: key);
 
   @override
@@ -30,10 +34,20 @@ class RollList extends StatelessWidget {
         final roll = rolls[index];
         return RollItem(
           roll: roll,
-          onDismissed: null,
+          onDismissed: (_) => _removeRoll(context, roll),
           onTap: null,
         );
       },
     );
+  }
+
+  void _removeRoll(BuildContext context, Roll roll) {
+    onRemove(roll);
+    Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Roll deleted'),
+        action: SnackBarAction(
+          label: 'UNDO',
+          onPressed: () => onUndoRemove(roll),
+        )));
   }
 }

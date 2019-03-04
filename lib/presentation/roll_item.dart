@@ -19,6 +19,14 @@ class RollItem extends StatelessWidget {
     return Dismissible(
       key: Keys.rollItem(roll.id),
       onDismissed: onDismissed,
+      background: Container(
+        alignment: AlignmentDirectional.centerEnd,
+        color: Colors.red,
+        child: Padding(
+          padding: EdgeInsets.only(right: 16.0),
+          child: Icon(Icons.delete, color: Colors.white),
+        ),
+      ),
       child: ListTile(
         onTap: onTap,
         leading: Icon(Icons.camera_roll, color: Colors.grey),

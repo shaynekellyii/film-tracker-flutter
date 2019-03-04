@@ -10,4 +10,8 @@ class RollRepository {
   const RollRepository({@required this.rollDao});
 
   Future<List<Roll>> loadRolls() async => rollDao.getAllRolls();
+
+  void deleteRoll(final int id) => rollDao.deleteRoll(id);
+
+  void saveRolls(final List<Roll> rolls) => rollDao.insertRolls(rolls);
 }
