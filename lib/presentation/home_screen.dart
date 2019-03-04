@@ -24,12 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: Text('Film tracker')),
       body: RollListContainer(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return AddRollContainer();
-              },
-            ),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddRollContainer(),
+              fullscreenDialog: true,
+            )),
         icon: Icon(Icons.add),
         label: Text('Add a new roll'),
       ),

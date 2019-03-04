@@ -24,7 +24,7 @@ class FilmTrackerApp extends StatelessWidget {
         title: 'Film tracker',
         theme: ThemeData(
           fontFamily: 'Roboto Mono',
-          primaryColor: Colors.white,
+          primaryColor: Colors.blue,
         ),
         routes: {
           '/': (context) => HomeScreen(
