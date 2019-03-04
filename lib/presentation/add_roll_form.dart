@@ -1,5 +1,6 @@
 import 'package:film_tracker/models/roll.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 typedef OnSaveCallback = Function(Roll roll);
 
@@ -21,13 +22,16 @@ class AddRollForm extends StatefulWidget {
 
 class _AddRollFormState extends State<AddRollForm> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _dateFormat = DateFormat('E, MMM d, y');
+  final _dateController = TextEditingController();
+  final _timeController = TextEditingController();
 
 //  bool get isEditing => widget.isEditing;
 
   String _name;
   String _camera;
-  String _date;
-  String _time;
+  DateTime _dateTime;
+  TimeOfDay _timeOfDay;
   int _iso;
   int _push;
 
@@ -52,8 +56,8 @@ class _AddRollFormState extends State<AddRollForm> {
                   children: <Widget>[
                     _getNameField(),
                     _getCameraField(),
-                    _getDateField(),
-                    _getTimeField(),
+                    _getDateField(_dateController),
+                    _getTimeField(_timeController),
                     _getIsoField(),
                     _getPushField(),
                   ],
@@ -78,8 +82,8 @@ class _AddRollFormState extends State<AddRollForm> {
       widget.onSave(Roll(
         camera: _camera,
         name: _name,
-        date: _date,
-        time: _time,
+        dateTime: DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
+            _timeOfDay.hour, _timeOfDay.minute),
         push: _push,
         iso: _iso,
       ));
@@ -113,30 +117,59 @@ class _AddRollFormState extends State<AddRollForm> {
     );
   }
 
-  TextFormField _getDateField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        icon: Icon(Icons.calendar_today),
-        labelText: 'Date',
+  Widget _getDateField(final TextEditingController controller) {
+    return GestureDetector(
+      onTap: () => _openDatePicker(controller),
+      child: AbsorbPointer(
+        child: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(
+            icon: Icon(Icons.calendar_today),
+            labelText: 'Date',
+          ),
+          validator: (value) {
+            return value.trim().isEmpty ? 'Please enter a date' : null;
+          },
+        ),
       ),
-      validator: (value) {
-        return value.trim().isEmpty ? 'Please enter a date' : null;
-      },
-      onSaved: (value) => _date = value,
     );
   }
 
-  TextFormField _getTimeField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        icon: Icon(Icons.access_time),
-        labelText: 'Time',
+  void _openDatePicker(final TextEditingController controller) {
+    showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2010),
+        lastDate: DateTime(2030),
+        builder: (context, child) =>
+            Theme(data: ThemeData.light(), child: child)).then((dateTime) {
+      controller.text = _dateFormat.format(dateTime);
+      _dateTime = dateTime;
+    });
+  }
+
+  Widget _getTimeField(final TextEditingController controller) {
+    return GestureDetector(
+      onTap: () => _openTimePicker(controller),
+      child: AbsorbPointer(
+        child: TextFormField(
+          controller: controller,
+          decoration:
+              InputDecoration(icon: Icon(Icons.access_time), labelText: 'Time'),
+          validator: (value) {
+            return value.trim().isEmpty ? 'Please enter a time' : null;
+          },
+        ),
       ),
-      validator: (value) {
-        return value.trim().isEmpty ? 'Please enter a time' : null;
-      },
-      onSaved: (value) => _time = value,
     );
+  }
+
+  void _openTimePicker(final TextEditingController controller) {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((timeOfDay) {
+      controller.text = timeOfDay.format(context);
+      _timeOfDay = timeOfDay;
+    });
   }
 
   TextFormField _getIsoField() {
@@ -161,7 +194,7 @@ class _AddRollFormState extends State<AddRollForm> {
         labelText: 'Push/pull (+/-)',
       ),
       validator: (value) {
-        return value.trim().isEmpty || int.tryParse(value.trim()) != null
+        return value.trim().isEmpty || int.tryParse(value.trim()) == null
             ? 'Please enter a push/pull value'
             : null;
       },

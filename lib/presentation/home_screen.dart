@@ -41,9 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.menu),
               onPressed: () {},
             ),
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {},
+            FlatButton(
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.sort),
+                ],
+              ),
+              onPressed: () => null,
             ),
           ],
         ),

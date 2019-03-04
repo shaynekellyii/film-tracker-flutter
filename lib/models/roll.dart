@@ -9,8 +9,7 @@ String jsonFromRoll(Roll roll) => json.encode(roll.toJson());
 class Roll {
   int id;
   String name;
-  String date;
-  String time;
+  DateTime dateTime;
   String camera;
   int iso;
   int push;
@@ -18,8 +17,7 @@ class Roll {
   Roll({
     this.id,
     @required this.name,
-    @required this.date,
-    @required this.time,
+    @required this.dateTime,
     @required this.camera,
     @required this.iso,
     @required this.push,
@@ -30,8 +28,7 @@ class Roll {
   factory Roll.fromJson(Map<String, dynamic> json) => Roll(
         id: json['id'],
         name: json['name'],
-        date: json['date'],
-        time: json['time'],
+        dateTime: json['dateTime'],
         camera: json['camera'],
         iso: json['iso'],
         push: json['push'],
@@ -40,8 +37,7 @@ class Roll {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'date': date,
-        'time': time,
+        'dateTime': dateTime,
         'camera': camera,
         'iso': iso,
         'push': push,
@@ -49,7 +45,6 @@ class Roll {
 
   @override
   String toString() {
-    return '''id: $id, name: $name, date: $date, time: $time, camera: $camera,
-    iso: $iso, push: $push''';
+    return 'Roll{id: $id, name: $name, dateTime: $dateTime, camera: $camera, iso: $iso, push: $push}';
   }
 }
