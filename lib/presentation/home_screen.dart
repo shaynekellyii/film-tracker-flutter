@@ -1,3 +1,4 @@
+import 'package:film_tracker/containers/add_roll_container.dart';
 import 'package:film_tracker/containers/roll_list_container.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: Text('Film tracker')),
       body: RollListContainer(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => null,
+        onPressed: () => showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return AddRollContainer();
+              },
+            ),
         icon: Icon(Icons.add),
         label: Text('Add a new roll'),
       ),
@@ -33,8 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            IconButton(icon: Icon(Icons.menu), onPressed: () {},),
-            IconButton(icon: Icon(Icons.search), onPressed: () {},),
+            IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
